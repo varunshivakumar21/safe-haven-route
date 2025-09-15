@@ -4,6 +4,76 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 
+const useDeviceFeatures = () => {
+  const { toast } = useToast();
+
+  const accessCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      // Create a simple capture interface
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      video.play();
+      
+      toast({
+        title: "📸 Camera Activated",
+        description: "Camera is ready for emergency documentation.",
+      });
+      
+      // Stop stream after showing activation
+      setTimeout(() => {
+        stream.getTracks().forEach(track => track.stop());
+      }, 3000);
+    } catch (error) {
+      toast({
+        title: "Camera Access Denied",
+        description: "Please allow camera permissions for emergency photos.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const getLocation = async () => {
+    if (!navigator.geolocation) {
+      toast({
+        title: "Location Not Supported",
+        description: "Your device doesn't support location services.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        toast({
+          title: "📍 Location Acquired",
+          description: `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}`,
+        });
+      },
+      (error) => {
+        toast({
+          title: "Location Access Denied",
+          description: "Please enable location services for safety monitoring.",
+          variant: "destructive",
+        });
+      }
+    );
+  };
+
+  const makeEmergencyCall = () => {
+    const emergencyNumber = "tel:100"; // Police emergency number in India
+    window.location.href = emergencyNumber;
+    
+    toast({
+      title: "📞 Emergency Call Initiated",
+      description: "Connecting to emergency services...",
+    });
+  };
+
+  return { accessCamera, getLocation, makeEmergencyCall };
+};
+
 interface EmergencyButtonProps {
   onEmergencyActivate?: () => void;
 }
@@ -12,6 +82,7 @@ const EmergencyButton = ({ onEmergencyActivate }: EmergencyButtonProps) => {
   const [isActivated, setIsActivated] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const { toast } = useToast();
+  const { accessCamera, getLocation, makeEmergencyCall } = useDeviceFeatures();
 
   const handleEmergencyPress = () => {
     if (isActivated) return;
@@ -114,6 +185,7 @@ const EmergencyButton = ({ onEmergencyActivate }: EmergencyButtonProps) => {
             variant="outline"
             size="sm"
             className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+            onClick={makeEmergencyCall}
           >
             <Phone className="w-4 h-4 mr-1" />
             Call
@@ -122,6 +194,7 @@ const EmergencyButton = ({ onEmergencyActivate }: EmergencyButtonProps) => {
             variant="outline"
             size="sm"
             className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+            onClick={getLocation}
           >
             <MapPin className="w-4 h-4 mr-1" />
             Location
@@ -130,6 +203,7 @@ const EmergencyButton = ({ onEmergencyActivate }: EmergencyButtonProps) => {
             variant="outline"
             size="sm"
             className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+            onClick={accessCamera}
           >
             <Camera className="w-4 h-4 mr-1" />
             Photo

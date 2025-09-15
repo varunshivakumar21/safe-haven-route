@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import DigitalId from "./DigitalId";
 import SafetyScore from "./SafetyScore";
 import EmergencyButton from "./EmergencyButton";
+import QuickActions from "./QuickActions";
+import DocumentsSection from "./DocumentsSection";
 
 interface Language {
   code: string;
@@ -141,29 +143,10 @@ const TouristSafetyApp = () => {
         <EmergencyButton onEmergencyActivate={handleEmergencyActivated} />
 
         {/* Quick Actions */}
-        <Card className="shadow-card">
-          <div className="p-4">
-            <h3 className="font-semibold mb-3">Quick Actions</h3>
-            <div className="grid grid-cols-2 gap-3">
-              <Button variant="outline" className="h-auto py-3 flex-col gap-1">
-                <span className="text-lg">🗺️</span>
-                <span className="text-xs">Safe Routes</span>
-              </Button>
-              <Button variant="outline" className="h-auto py-3 flex-col gap-1">
-                <span className="text-lg">🏥</span>
-                <span className="text-xs">Medical Help</span>
-              </Button>
-              <Button variant="outline" className="h-auto py-3 flex-col gap-1">
-                <span className="text-lg">🚔</span>
-                <span className="text-xs">Police Stations</span>
-              </Button>
-              <Button variant="outline" className="h-auto py-3 flex-col gap-1">
-                <span className="text-lg">ℹ️</span>
-                <span className="text-xs">Tourist Info</span>
-              </Button>
-            </div>
-          </div>
-        </Card>
+        <QuickActions />
+
+        {/* Documents Section */}
+        <DocumentsSection />
 
         {/* Recent Activity */}
         <Card className="shadow-card">
