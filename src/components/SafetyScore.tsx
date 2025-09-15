@@ -1,6 +1,7 @@
 import { Shield, AlertTriangle, AlertCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { getTranslation } from "@/utils/translations";
 
 interface SafetyScoreProps {
   score: number;
@@ -11,9 +12,12 @@ interface SafetyScoreProps {
     activity: number;
     weather: number;
   };
+  currentLanguage: string;
 }
 
-const SafetyScore = ({ score, status, factors }: SafetyScoreProps) => {
+const SafetyScore = ({ score, status, factors, currentLanguage }: SafetyScoreProps) => {
+  const t = (key: string) => getTranslation(key, currentLanguage);
+  
   const getStatusConfig = () => {
     switch (status) {
       case "safe":
@@ -22,7 +26,7 @@ const SafetyScore = ({ score, status, factors }: SafetyScoreProps) => {
           color: "text-safety-safe",
           bgColor: "bg-safety-safe/10",
           shadowClass: "shadow-safe",
-          title: "Safe",
+          title: t('safe'),
           description: "All safety parameters are optimal"
         };
       case "caution":
@@ -31,7 +35,7 @@ const SafetyScore = ({ score, status, factors }: SafetyScoreProps) => {
           color: "text-safety-caution",
           bgColor: "bg-safety-caution/10",
           shadowClass: "shadow-caution",
-          title: "Caution",
+          title: t('caution'),
           description: "Some safety factors need attention"
         };
       case "danger":
@@ -40,7 +44,7 @@ const SafetyScore = ({ score, status, factors }: SafetyScoreProps) => {
           color: "text-safety-danger",
           bgColor: "bg-safety-danger/10",
           shadowClass: "shadow-danger",
-          title: "Alert",
+          title: t('danger'),
           description: "Immediate safety action recommended"
         };
     }
@@ -77,7 +81,7 @@ const SafetyScore = ({ score, status, factors }: SafetyScoreProps) => {
           </div>
           <div className="text-right">
             <div className={`text-3xl font-bold ${getScoreColor()}`}>{score}</div>
-            <div className="text-xs text-muted-foreground">Safety Score</div>
+            <div className="text-xs text-muted-foreground">{t('safetyScore')}</div>
           </div>
         </div>
 
@@ -102,7 +106,7 @@ const SafetyScore = ({ score, status, factors }: SafetyScoreProps) => {
           
           {Object.entries(factors).map(([factor, value]) => (
             <div key={factor} className="flex items-center justify-between">
-              <span className="text-sm capitalize text-muted-foreground">{factor}</span>
+              <span className="text-sm capitalize text-muted-foreground">{t(factor)}</span>
               <div className="flex items-center gap-2">
                 <div className="w-16 bg-muted rounded-full h-1.5">
                   <div 

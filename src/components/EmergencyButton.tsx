@@ -3,6 +3,7 @@ import { AlertTriangle, Phone, MapPin, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { getTranslation } from "@/utils/translations";
 
 const useDeviceFeatures = () => {
   const { toast } = useToast();
@@ -76,9 +77,11 @@ const useDeviceFeatures = () => {
 
 interface EmergencyButtonProps {
   onEmergencyActivate?: () => void;
+  currentLanguage: string;
 }
 
-const EmergencyButton = ({ onEmergencyActivate }: EmergencyButtonProps) => {
+const EmergencyButton = ({ onEmergencyActivate, currentLanguage }: EmergencyButtonProps) => {
+  const t = (key: string) => getTranslation(key, currentLanguage);
   const [isActivated, setIsActivated] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const { toast } = useToast();
@@ -146,7 +149,7 @@ const EmergencyButton = ({ onEmergencyActivate }: EmergencyButtonProps) => {
             <AlertTriangle className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-semibold">Emergency Services</h3>
+            <h3 className="font-semibold">{t('emergencyAssistance')}</h3>
             <p className="text-sm opacity-90">24/7 Response Available</p>
           </div>
         </div>
@@ -154,27 +157,27 @@ const EmergencyButton = ({ onEmergencyActivate }: EmergencyButtonProps) => {
         {/* Emergency Button */}
         <div className="text-center mb-6">
           {!isActivated ? (
-            <Button
-              onClick={handleEmergencyPress}
-              size="lg"
-              className="w-full h-16 bg-white/20 hover:bg-white/30 text-white font-bold text-lg rounded-xl transition-spring"
-            >
-              <AlertTriangle className="w-6 h-6 mr-2" />
-              EMERGENCY
-            </Button>
+              <Button
+                onClick={handleEmergencyPress}
+                size="lg"
+                className="w-full h-16 bg-white/20 hover:bg-white/30 text-white font-bold text-lg rounded-xl transition-spring"
+              >
+                <AlertTriangle className="w-6 h-6 mr-2" />
+                EMERGENCY
+              </Button>
           ) : (
             <div className="space-y-4">
               <div className="text-center">
                 <div className="text-4xl font-bold mb-2">{countdown}</div>
                 <p className="text-sm opacity-90">Activating emergency alert...</p>
               </div>
-              <Button
-                onClick={cancelEmergency}
-                size="lg"
-                className="w-full bg-white/20 hover:bg-white/30 text-white"
-              >
-                Cancel
-              </Button>
+                <Button
+                  onClick={cancelEmergency}
+                  size="lg"
+                  className="w-full bg-white/20 hover:bg-white/30 text-white"
+                >
+                  {t('cancel')}
+                </Button>
             </div>
           )}
         </div>

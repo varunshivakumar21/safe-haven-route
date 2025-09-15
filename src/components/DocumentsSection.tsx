@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { getTranslation } from "@/utils/translations";
 
 interface Document {
   id: string;
@@ -14,7 +15,12 @@ interface Document {
   category: "identity" | "travel" | "medical" | "insurance";
 }
 
-const DocumentsSection = () => {
+interface DocumentsSectionProps {
+  currentLanguage: string;
+}
+
+const DocumentsSection = ({ currentLanguage }: DocumentsSectionProps) => {
+  const t = (key: string) => getTranslation(key, currentLanguage);
   const { toast } = useToast();
   const [documents, setDocuments] = useState<Document[]>([
     {
@@ -48,6 +54,14 @@ const DocumentsSection = () => {
       size: "654 KB", 
       uploadDate: "2025-01-12",
       category: "travel"
+    },
+    {
+      id: "5",
+      name: "Medical_Report.pdf",
+      type: "PDF",
+      size: "1.2 MB",
+      uploadDate: "2025-01-14",
+      category: "medical"
     }
   ]);
 
@@ -105,7 +119,7 @@ const DocumentsSection = () => {
     <Card className="shadow-card">
       <div className="p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold">My Documents</h3>
+          <h3 className="font-semibold">{t('myDocuments')}</h3>
           <div className="relative">
             <input
               type="file"
@@ -119,7 +133,7 @@ const DocumentsSection = () => {
               onClick={() => document.getElementById('file-upload')?.click()}
             >
               <Plus className="w-4 h-4 mr-1" />
-              Add
+              {t('add')}
             </Button>
           </div>
         </div>
@@ -139,7 +153,7 @@ const DocumentsSection = () => {
               
               <div className="flex items-center gap-2">
                 <Badge className={categoryColors[doc.category]}>
-                  {doc.category}
+                  {t(doc.category)}
                 </Badge>
                 <Button size="sm" variant="ghost" onClick={() => handleView(doc)}>
                   <Eye className="w-4 h-4" />
@@ -161,7 +175,7 @@ const DocumentsSection = () => {
         </div>
 
         <div className="mt-4 text-xs text-muted-foreground text-center">
-          📱 Documents are encrypted and stored securely
+          📱 {t('documentsEncrypted')}
         </div>
       </div>
     </Card>

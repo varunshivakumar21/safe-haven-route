@@ -1,6 +1,7 @@
-import { Shield, CheckCircle, Clock, MapPin } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { CheckCircle, Clock, AlertCircle } from "lucide-react";
+import { getTranslation } from "@/utils/translations";
 
 interface DigitalIdProps {
   touristName: string;
@@ -8,22 +9,26 @@ interface DigitalIdProps {
   nationality: string;
   validUntil: string;
   currentLocation: string;
-  verificationStatus: "verified" | "pending" | "expired";
+  verificationStatus: "verified" | "pending" | "unverified";
+  currentLanguage: string;
 }
 
-const DigitalId = ({
-  touristName,
-  touristId,
-  nationality,
-  validUntil,
-  currentLocation,
-  verificationStatus
+const DigitalId = ({ 
+  touristName, 
+  touristId, 
+  nationality, 
+  validUntil, 
+  currentLocation, 
+  verificationStatus,
+  currentLanguage 
 }: DigitalIdProps) => {
+  const t = (key: string) => getTranslation(key, currentLanguage);
+  
   const getStatusColor = () => {
     switch (verificationStatus) {
       case "verified": return "bg-safety-safe";
       case "pending": return "bg-safety-caution";
-      case "expired": return "bg-safety-danger";
+      case "unverified": return "bg-safety-danger";
       default: return "bg-muted";
     }
   };
@@ -32,7 +37,7 @@ const DigitalId = ({
     switch (verificationStatus) {
       case "verified": return <CheckCircle className="w-4 h-4" />;
       case "pending": return <Clock className="w-4 h-4" />;
-      default: return <Shield className="w-4 h-4" />;
+      default: return <AlertCircle className="w-4 h-4" />;
     }
   };
 
@@ -48,8 +53,8 @@ const DigitalId = ({
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            <Shield className="w-6 h-6" />
-            <span className="text-sm font-medium opacity-90">Digital Tourist ID</span>
+            <CheckCircle className="w-6 h-6" />
+            <span className="text-sm font-medium opacity-90">{t('digitalTouristId')}</span>
           </div>
           <Badge 
             variant="secondary" 
@@ -57,7 +62,7 @@ const DigitalId = ({
           >
             <div className="flex items-center gap-1">
               {getStatusIcon()}
-              <span className="capitalize">{verificationStatus}</span>
+              <span className="capitalize">{t('verified')}</span>
             </div>
           </Badge>
         </div>
@@ -71,18 +76,18 @@ const DigitalId = ({
 
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
-              <p className="opacity-70 mb-1">Nationality</p>
+              <p className="opacity-70 mb-1">{t('nationality')}</p>
               <p className="font-medium">{nationality}</p>
             </div>
             <div>
-              <p className="opacity-70 mb-1">Valid Until</p>
+              <p className="opacity-70 mb-1">{t('validUntil')}</p>
               <p className="font-medium">{validUntil}</p>
             </div>
           </div>
 
           {/* Current Location */}
           <div className="flex items-center gap-2 pt-2 border-t border-white/20">
-            <MapPin className="w-4 h-4 opacity-70" />
+            <CheckCircle className="w-4 h-4 opacity-70" />
             <span className="text-sm opacity-90">{currentLocation}</span>
           </div>
         </div>

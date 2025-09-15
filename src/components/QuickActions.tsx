@@ -2,8 +2,14 @@ import { MapPin, Heart, Shield, Info, Navigation, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { getTranslation } from "@/utils/translations";
 
-const QuickActions = () => {
+interface QuickActionsProps {
+  currentLanguage: string;
+}
+
+const QuickActions = ({ currentLanguage }: QuickActionsProps) => {
+  const t = (key: string) => getTranslation(key, currentLanguage);
   const { toast } = useToast();
 
   const goaAttractions = [
@@ -96,7 +102,7 @@ const QuickActions = () => {
   return (
     <Card className="shadow-card">
       <div className="p-4">
-        <h3 className="font-semibold mb-3">Quick Actions - Goa</h3>
+        <h3 className="font-semibold mb-3">{t('quickActions')} - Goa</h3>
         <div className="grid grid-cols-2 gap-3">
           <Button 
             variant="outline" 
