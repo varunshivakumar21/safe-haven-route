@@ -22,6 +22,8 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          light: "hsl(var(--primary-light))",
+          dark: "hsl(var(--primary-dark))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -57,6 +59,28 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        safety: {
+          safe: "hsl(var(--safety-safe))",
+          caution: "hsl(var(--safety-caution))",
+          danger: "hsl(var(--safety-danger))",
+        },
+      },
+      backgroundImage: {
+        'gradient-safety': 'var(--gradient-safety)',
+        'gradient-trust': 'var(--gradient-trust)',
+        'gradient-emergency': 'var(--gradient-emergency)',
+        'gradient-background': 'var(--gradient-background)',
+      },
+      boxShadow: {
+        'safe': 'var(--shadow-safe)',
+        'caution': 'var(--shadow-caution)',
+        'danger': 'var(--shadow-danger)',
+        'card': 'var(--shadow-card)',
+        'button': 'var(--shadow-button)',
+      },
+      transitionTimingFunction: {
+        'smooth': 'var(--transition-smooth)',
+        'spring': 'var(--transition-spring)',
       },
       borderRadius: {
         lg: "var(--radius)",
